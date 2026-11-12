@@ -117,14 +117,14 @@ document.getElementById("vendorLoginForm").addEventListener("submit",function(e)
  var pass=document.getElementById("loginPassword").value;
  var v=vendors.find(v=>v.email===email&&v.password===pass);
  if(!v) return alert("Wrong email or password.");
- currentVendor={name:v.name,email:v.email};save();this.reset();renderVendor();
+ currentVendor={name:v.name,phone:v.phone,email:v.email};save();this.reset();renderVendor();
 });
 function vendorLogout() {currentVendor=null;save();renderVendor();}
 document.getElementById("productForm").addEventListener("submit",function(e) {
  e.preventDefault();
- var p={id:Date.now(),name:pName.value,vendor:currentVendor.name,owner:currentVendor.email,price:Number(pPrice.value),category:pCategory.value,stock:Number(pStock.value),emoji:pEmoji.value||"🛍️",description:pDescription.value};
+ var p={id:Date.now(),name:document.getElementById("pName").value,vendor:currentVendor.name,owner:currentVendor.email,price:Number(document.getElementById("pPrice").value),category:document.getElementById("pCategory").value,stock:Number(document.getElementById("pStock").value),emoji:document.getElementById("pEmoji").value||"🛍️",description:document.getElementById("pDescription").value};
  if(p.price<=0) return alert("Enter a valid price.");
- products.unshift(p);save();this.reset();pStock.value=10;renderProducts();showPage("home");alert("Product added to homepage!");
+ products.unshift(p);save();this.reset();document.getElementById("pStock").value=10;renderProducts();showPage("home");alert("Product added to homepage!");
 });
 function deleteProduct(id) {products=products.filter(p=>p.id!==id);save();renderVendor();renderProducts();}
 function renderOrders() {
