@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A student marketplace demo connecting local vendors with nearby customers." />
+  <title>LocalVibe | Shop Local. Support Local.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="nav">
+  <div class="brand-lockup">
+    <svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="LocalVibe shopping bag logo" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="bagPurple" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs>
+      <path d="M20 23v-5a12 12 0 0 1 24 0v5" fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round"/>
+      <path d="M12 23a4 4 0 0 1 4-4h32a4 4 0 0 1 4 4l4 31a5 5 0 0 1-5 6H13a5 5 0 0 1-5-6l4-31Z" fill="url(#bagPurple)"/>
+      <path d="M32 31c-5-7-14 1-5 9l5 5 5-5c9-8 0-16-5-9Z" fill="#fff"/>
+    </svg>
+    <div><div class="brand">Local<span>Vibe</span></div><div class="brand-tagline">Every Product Deserves a Platform....</div></div>
+  </div>
+  <nav class="navlinks" aria-label="Main navigation">
+    <button class="active" data-page="home">Home</button><button data-page="vendor">Vendors</button><button data-page="home">Shop</button><button data-page="orders">Track Order</button><button data-page="admin">Admin</button><button data-page="cart">Cart (<span id="cartCount">0</span>)</button><button class="nav-login" onclick="showPage('vendor');setVendorAuthMode('login')">Login</button><button class="nav-signup" onclick="showPage('vendor');setVendorAuthMode('register')">Sign Up</button>
+  </nav>
+</div></header>
+<section class="hero" id="hero"><div class="hero-inner"><div><p class="eyebrow">YOUR NEIGHBOURHOOD MARKETPLACE</p><h1>Local<span class="hero-highlight">Vibe</span></h1><h2 class="hero-subtitle">Shop Local. Support Local.</h2><p>Discover amazing products from nearby vendors and support small businesses in your community!</p><div class="hero-actions"><button class="btn primary" onclick="showPage('home');document.getElementById('products').scrollIntoView({behavior:'smooth'})">🛒 Start Shopping →</button><button class="btn outline hero-vendor" onclick="showPage('vendor');setVendorAuthMode('register')">Become a Vendor</button></div></div><div class="hero-art" aria-label="Local shop illustration"><div class="art-sun"></div><div class="shop-sign">LocalVibe ♥</div><div class="shop-awning"><span></span><span></span><span></span><span></span><span></span></div><div class="shop-window"><div class="shop-plant">🪴</div><div class="shop-owner">😊</div><div class="shop-bag">🛍️</div></div><div class="shop-counter"></div><div class="art-heart">♡</div></div></div></section>
+<div class="feature-strip"><div><span>🏪</span><strong>Support Local Businesses</strong></div><div><span>🛡️</span><strong>Safe & Simple Shopping</strong></div><div><span>🚚</span><strong>Track Your Orders</strong></div><div><span>💜</span><strong>Shop with Heart</strong></div></div><main>
+  <section id="page-home">
+    <div class="section-head"><div><h2 id="products">Popular Local Products</h2><div class="muted">Handpicked finds from sellers around you</div></div><span class="muted" id="resultCount"></span></div>
+    <div class="toolbar"><input id="search" placeholder="Search products or vendors..." aria-label="Search products"><select id="category"><option value="All">All categories</option><option>Groceries</option><option>Food</option><option>Clothing</option><option>Handmade</option><option>Home</option></select><select id="sort"><option value="default">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select></div>
+    <div class="grid" id="productGrid"></div>
+  </section>
+  <section id="page-vendor" class="hidden">
+    <div class="section-head"><div><h2>Vendor portal</h2><div class="muted">Sign in or register to add your products.</div></div></div>
+    <div id="vendorAuth" class="panel">
+      <div class="auth-tabs"><button id="showVendorLogin" class="active" type="button" onclick="setVendorAuthMode('login')">Vendor sign in</button><button id="showVendorRegister" type="button" onclick="setVendorAuthMode('register')">Create account</button></div>
+      <form id="vendorLoginForm" class="form-grid"><div class="full"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" required autocomplete="username" placeholder="vendor@example.com"></div><div class="full"><label for="loginPassword">Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Enter your password"></div><div class="full"><button class="btn primary" type="submit">Sign in to vendor account</button></div></form>
+      <form id="vendorRegisterForm" class="form-grid hidden"><div><label for="registerName">Vendor / shop name</label><input id="registerName" required maxlength="60" placeholder="e.g. Sharma Fresh Mart"></div><div><label for="registerPhone">Phone number</label><input id="registerPhone" type="tel" required pattern="[0-9+() -]{8,18}" placeholder="Your contact number"></div><div class="full"><label for="registerEmail">Email address</label><input id="registerEmail" type="email" required autocomplete="username" placeholder="vendor@example.com"></div><div class="full"><label for="registerPassword">Create password</label><input id="registerPassword" type="password" minlength="6" required autocomplete="new-password" placeholder="At least 6 characters"></div><div class="full"><button class="btn primary" type="submit">Create vendor account</button></div></form>
+      <p class="muted">Student demo: account details are saved only in this browser. Do not use a real or reused password.</p><div id="vendorAuthMessage" class="muted" role="status"></div>
+    </div>
+    <div id="vendorDashboard" class="hidden"><div class="panel"><div class="vendor-welcome"><div><h3 id="vendorWelcomeTitle">Welcome, vendor</h3><div class="muted">You are signed in.</div></div><button class="btn secondary" type="button" onclick="vendorLogout()">Sign out</button></div></div>
+      <div class="panel"><h3>Add a product</h3><form id="productForm" class="form-grid"><div><label for="pName">Product name</label><input id="pName" required maxlength="80" placeholder="e.g. Fresh tomatoes"></div><div><label for="pPrice">Price (₹)</label><input id="pPrice" type="number" min="1" step="1" required placeholder="80"></div><div><label for="pCategory">Category</label><select id="pCategory"><option>Groceries</option><option>Food</option><option>Clothing</option><option>Handmade</option><option>Home</option></select></div><div><label for="pStock">Available stock</label><input id="pStock" type="number" min="0" value="10" required></div><div><label for="pEmoji">Product icon (emoji)</label><input id="pEmoji" maxlength="4" placeholder="🍅"></div><div class="full"><label for="pDescription">Product description</label><textarea id="pDescription" maxlength="300" placeholder="Describe your product..."></textarea></div><div class="full"><button class="btn primary" type="submit">Register product for sale</button></div></form></div>
+      <div class="panel"><h3>Your listed products</h3><div id="vendorProducts"></div></div></div>
+  </section>
+  <section id="page-cart" class="hidden"><div class="section-head"><div><h2>Your shopping cart</h2><div class="muted">Review your items before checkout</div></div></div><div class="panel" id="cartContents"></div></section>
+  <section id="page-orders" class="hidden"><div class="section-head"><div><h2>My orders</h2><div class="muted">Your demo order history</div></div></div><div class="panel" id="orderContents"></div></section>
+  <section id="page-admin" class="hidden"><div class="section-head"><div><h2>Admin dashboard</h2><div class="muted">A quick overview of marketplace activity</div></div></div><div class="stats" id="adminStats"></div><div class="panel"><h3>Recent orders</h3><div id="adminOrders"></div></div><div class="notice">For a real deployment, admin access must be protected with authentication and server-side permissions. This classroom demo is not connected to a live payment gateway.</div></section>
+</main>
+<footer>© 2026 LocalVibe · Shop Local. Support Local.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
