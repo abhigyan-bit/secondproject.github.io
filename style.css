@@ -1,0 +1,73 @@
+/* Simple CSS for the LocalVibe student project */
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;color:#21143e;background:white}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{background:white;border-bottom:1px solid #eee5fb;position:sticky;top:0}
+.nav{max-width:1220px;margin:auto;padding:12px 25px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.brand-lockup{display:flex;align-items:center;gap:10px}
+.brand-mark{width:42px;height:42px}
+.brand{font-size:25px;font-weight:bold;color:#17112e}
+.brand span,.hero-highlight{color:#6d28d9}
+.brand-tagline{font-size:10px;color:#746b86;margin-top:3px}
+.navlinks{display:flex;gap:5px;flex-wrap:wrap}
+.navlinks button,.btn{border:0;border-radius:25px;padding:11px 16px;font-weight:bold;background:white;color:#403458}
+.navlinks button:hover,.navlinks .active{background:#6d28d9;color:white}
+.navlinks .nav-login{border:1px solid #b99ae9;color:#6d28d9}
+.navlinks .nav-signup,.btn.primary,.small-btn{background:#6d28d9;color:white}
+.hero{background:linear-gradient(110deg,#fbf5ff,#eee1ff);padding:40px 25px}
+.hero-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+.eyebrow{color:#6d28d9;font-size:12px;font-weight:bold;letter-spacing:1px}
+.hero h1{font-size:70px;margin:5px 0;color:#120d29}
+.hero-subtitle{font-size:30px;margin:8px 0}
+.hero-inner p{color:#655b78;line-height:1.5}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{padding:13px 20px}
+.btn.primary{background:#6d28d9}
+.btn.outline{border:1px solid #a78bce;color:#6d28d9}
+.hero-art{height:245px;position:relative;display:flex;justify-content:center;align-items:flex-end}
+.art-sun{position:absolute;width:210px;height:210px;border-radius:50%;background:#e6d3ff;right:20px;top:5px}
+.shop-sign{position:absolute;top:15px;z-index:2;background:#d9a879;border:4px solid #b77c51;border-radius:8px;padding:8px 18px;font-weight:bold}
+.shop-awning{position:absolute;top:60px;width:78%;height:60px;background:repeating-linear-gradient(90deg,#7434d4 0 38px,white 38px 76px);border-bottom:5px solid #6b2dbd}
+.shop-window{position:absolute;bottom:20px;width:66%;height:135px;background:#c98d65;border:8px solid #a96849;display:flex;align-items:center;justify-content:space-around;font-size:38px}
+.shop-counter{position:absolute;bottom:10px;width:78%;height:25px;background:#c98d65;border:4px solid #a96849}
+.art-heart{position:absolute;left:5%;top:25px;color:#6d28d9;font-size:40px}
+.feature-strip{max-width:1200px;margin:14px auto;padding:14px;background:#faf5ff;border:1px solid #f0e6ff;border-radius:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.feature-strip div{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px}
+.feature-strip span{font-size:23px}
+main{max-width:1200px;margin:32px auto;padding:0 25px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px;gap:10px}
+.section-head h2{margin:0;color:#281346;font-size:27px}
+.muted{color:#746b86;font-size:14px}
+.toolbar{display:flex;gap:10px;margin:18px 0;flex-wrap:wrap}
+input,select,textarea{width:100%;padding:12px;border:1px solid #e1d6ef;border-radius:10px;background:white}
+.toolbar input{flex:1;min-width:200px}
+.toolbar select{width:auto;min-width:160px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.product,.panel{border:1px solid #e9def7;border-radius:15px;background:white;padding:15px;margin:18px 0}
+.product{padding:0;overflow:hidden}
+.product-art{height:140px;background:#f4edff;display:flex;align-items:center;justify-content:center;font-size:65px}
+.product-body{padding:15px}
+.product h3{margin:0 0 6px}
+.vendor{font-size:12px;color:#746b86}
+.price-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
+.price{font-size:19px;font-weight:bold;color:#6d28d9}
+.small-btn{border:0;border-radius:20px;padding:9px 13px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form-grid .full{grid-column:1/-1}
+label{display:block;margin-bottom:6px;font-size:13px;font-weight:bold;color:#514365}
+textarea{min-height:90px}
+.hidden{display:none!important}
+.auth-tabs{display:flex;gap:8px;margin-bottom:15px}
+.auth-tabs button{padding:10px 15px;border:1px solid #e4d8f2;border-radius:20px;background:white}
+.auth-tabs button.active{background:#6d28d9;color:white}
+.vendor-welcome,.cart-row,.order-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee6f7}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{padding:5px 10px;background:white;border:1px solid #e5d9f2;border-radius:8px}
+.total{text-align:right;font-size:21px;font-weight:bold;color:#6d28d9;margin:18px 0}
+.notice{padding:12px;background:#fff7e9;color:#80511b;border-radius:10px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat{padding:15px;background:#f5edff;border-radius:12px}
+.stat strong{display:block;font-size:24px;color:#6d28d9}
+footer{text-align:center;padding:25px;background:#fbf8ff;color:#81748f;font-size:13px}
+@media(max-width:700px){.nav{justify-content:center}.hero-inner{grid-template-columns:1fr}.hero h1{font-size:54px}.feature-strip{grid-template-columns:1fr 1fr;margin:12px}.feature-strip div{justify-content:flex-start}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}main{padding:0 15px}.toolbar select{flex:1}.cart-row,.order-row{align-items:flex-start;flex-wrap:wrap}}
