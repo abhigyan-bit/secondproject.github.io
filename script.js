@@ -1,6 +1,7 @@
-// LocalVibe - basic JavaScript
+// LocalVibe - frontend demo JavaScript
+// Demo data is temporary and resets when the page is refreshed.
 
-var products = JSON.parse(localStorage.getItem("products")) || [
+var products = [
  {id:1,name:"Fresh vegetables",vendor:"Green Basket",price:60,category:"Groceries",stock:20,emoji:"🥬"},
  {id:2,name:"Mango pickle",vendor:"Asha Home Foods",price:140,category:"Food",stock:12,emoji:"🥭"},
  {id:3,name:"Cotton tote bag",vendor:"Thread & Craft",price:220,category:"Handmade",stock:8,emoji:"👜"},
@@ -8,24 +9,16 @@ var products = JSON.parse(localStorage.getItem("products")) || [
  {id:5,name:"Clay flower pot",vendor:"Mitti Studio",price:110,category:"Home",stock:10,emoji:"🪴"},
  {id:6,name:"Cotton kurta",vendor:"Local Loom",price:499,category:"Clothing",stock:6,emoji:"👕"}
 ];
-var vendors = JSON.parse(localStorage.getItem("vendors")) || [];
-var cart = JSON.parse(localStorage.getItem("cart")) || [];
-var orders = JSON.parse(localStorage.getItem("orders")) || [];
-var currentVendor = JSON.parse(localStorage.getItem("currentVendor")) || null;
+var vendors = [];
+var cart = [];
+var orders = [];
+var currentVendor = null;
 
-function save() {
- localStorage.setItem("products",JSON.stringify(products));
- localStorage.setItem("vendors",JSON.stringify(vendors));
- localStorage.setItem("cart",JSON.stringify(cart));
- localStorage.setItem("orders",JSON.stringify(orders));
- localStorage.setItem("currentVendor",JSON.stringify(currentVendor));
- document.getElementById("cartCount").innerText=cart.reduce((n,item)=>n+item.qty,0);
- updateMenu();
-}
 function updateMenu() {
  document.querySelector(".nav-login").classList.toggle("hidden",!!currentVendor);
  document.querySelector(".nav-signup").classList.toggle("hidden",!!currentVendor);
  document.querySelector(".hero-vendor").classList.toggle("hidden",!!currentVendor);
+ document.getElementById("cartCount").innerText=cart.reduce((n,item)=>n+item.qty,0);
 }
 function showPage(name) {
  document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
@@ -66,7 +59,7 @@ function renderProducts() {
  if(sort==="high") list.sort((a,b)=>b.price-a.price);
  document.getElementById("resultCount").innerText=list.length+" products";
  document.getElementById("productGrid").innerHTML=list.map(p=>
-  '<div class="product"><div class="product-art">'+(p.emoji||"🛍️")+'</div><div class="product-body"><h3>'+p.name+'</h3><p class="vendor">By '+p.vendor+' · '+p.category+'</p><p class="muted">'+(p.stock||0)+' in stock</p><div class="price-row"><b class="price">₹'+p.price+'</b><button class="small-btn" onclick="addToCart('+p.id+')">Add to cart</button></div></div></div>'
+  '<div class="product"><div class="product-art">'+p.emoji+'</div><div class="product-body"><h3>'+p.name+'</h3><p class="vendor">By '+p.vendor+' · '+p.category+'</p><p class="muted">'+p.stock+' in stock</p><div class="price-row"><b class="price">₹'+p.price+'</b><button class="small-btn" onclick="addToCart('+p.id+')">Add to cart</button></div></div></div>'
  ).join("")||"<p>No products found.</p>";
 }
 function addToCart(id) {
@@ -74,7 +67,7 @@ function addToCart(id) {
  if(!p||p.stock<1) return alert("Out of stock!");
  var item=cart.find(c=>c.id===id);
  if(item) item.qty++; else cart.push({id:id,qty:1});
- save();alert("Added to cart!");
+ updateMenu();alert("Added to cart!");
 }
 function renderCart() {
  var total=0;
@@ -90,9 +83,9 @@ function changeQty(id,n) {
  var item=cart.find(c=>c.id===id);
  if(item) item.qty+=n;
  cart=cart.filter(c=>c.qty>0);
- save();renderCart();
+ updateMenu();renderCart();
 }
-function removeItem(id) {cart=cart.filter(c=>c.id!==id);save();renderCart();}
+function removeItem(id) {cart=cart.filter(c=>c.id!==id);updateMenu();renderCart();}
 function checkout() {
  if(!cart.length) return;
  var items=[],total=0;
@@ -100,41 +93,43 @@ function checkout() {
   var p=products.find(p=>p.id===c.id);
   if(p) {items.push({name:p.name,qty:c.qty});total+=p.price*c.qty;p.stock-=c.qty;}
  });
- orders.push({id:Date.now(),date:new Date().toLocaleDateString(),items:items,total:total});
- cart=[];save();alert("Order placed!");showPage("orders");
+ orders.push({id:orders.length+1,date:new Date().toLocaleDateString(),items:items,total:total});
+ cart=[];updateMenu();alert("Demo order placed!");showPage("orders");
 }
 document.getElementById("vendorRegisterForm").addEventListener("submit",function(e) {
  e.preventDefault();
  var email=document.getElementById("registerEmail").value.toLowerCase();
  if(vendors.some(v=>v.email===email)) return alert("Email already registered.");
  currentVendor={name:document.getElementById("registerName").value,email:email};
- vendors.push({...currentVendor,password:document.getElementById("registerPassword").value});
- save();this.reset();renderVendor();alert("Account created!");
+ vendors.push({name:currentVendor.name,email:email,password:document.getElementById("registerPassword").value});
+ this.reset();renderVendor();alert("Demo account created!");
 });
 document.getElementById("vendorLoginForm").addEventListener("submit",function(e) {
  e.preventDefault();
  var email=document.getElementById("loginEmail").value.toLowerCase();
  var pass=document.getElementById("loginPassword").value;
  var v=vendors.find(v=>v.email===email&&v.password===pass);
- if(!v) return alert("Wrong email or password.");
- currentVendor={name:v.name,phone:v.phone,email:v.email};save();this.reset();renderVendor();
+ if(!v) return alert("Demo account not found. Please register first.");
+ currentVendor={name:v.name,email:v.email};this.reset();renderVendor();
 });
-function vendorLogout() {currentVendor=null;save();renderVendor();}
+function vendorLogout() {currentVendor=null;renderVendor();}
 document.getElementById("productForm").addEventListener("submit",function(e) {
  e.preventDefault();
- var p={id:Date.now(),name:document.getElementById("pName").value,vendor:currentVendor.name,owner:currentVendor.email,price:Number(document.getElementById("pPrice").value),category:document.getElementById("pCategory").value,stock:Number(document.getElementById("pStock").value),emoji:document.getElementById("pEmoji").value||"🛍️",description:document.getElementById("pDescription").value};
+ if(!currentVendor) return alert("Please register or sign in first.");
+ var p={id:Date.now(),name:document.getElementById("pName").value,vendor:currentVendor.name,owner:currentVendor.email,price:Number(document.getElementById("pPrice").value),category:document.getElementById("pCategory").value,stock:Number(document.getElementById("pStock").value),emoji:document.getElementById("pEmoji").value||"🛍️"};
  if(p.price<=0) return alert("Enter a valid price.");
- products.unshift(p);save();this.reset();document.getElementById("pStock").value=10;renderProducts();showPage("home");alert("Product added to homepage!");
+ products.unshift(p);this.reset();document.getElementById("pStock").value=10;
+ renderProducts();showPage("home");alert("Demo product added to homepage!");
 });
-function deleteProduct(id) {products=products.filter(p=>p.id!==id);save();renderVendor();renderProducts();}
+function deleteProduct(id) {products=products.filter(p=>p.id!==id);renderVendor();renderProducts();}
 function renderOrders() {
- document.getElementById("orderContents").innerHTML=orders.map(o=>'<p>Order '+o.id+' · '+o.date+' · '+o.items.map(i=>i.name+" x "+i.qty).join(", ")+' · ₹'+o.total+'</p>').join("")||"No orders yet.";
+ document.getElementById("orderContents").innerHTML=orders.map(o=>'<p>Order '+o.id+' · '+o.date+' · '+o.items.map(i=>i.name+" x "+i.qty).join(", ")+' · ₹'+o.total+'</p>').join("")||"No demo orders yet.";
 }
 function renderAdmin() {
  var sales=orders.reduce((sum,o)=>sum+o.total,0);
- document.getElementById("adminStats").innerHTML='<div class="stat">Products<strong>'+products.length+'</strong></div><div class="stat">Vendors<strong>'+vendors.length+'</strong></div><div class="stat">Orders<strong>'+orders.length+'</strong></div><div class="stat">Sales<strong>₹'+sales+'</strong></div>';
- document.getElementById("adminOrders").innerHTML=orders.slice(-5).map(o=>'<p>Order '+o.id+' - ₹'+o.total+'</p>').join("")||"No orders yet.";
+ document.getElementById("adminStats").innerHTML='<div class="stat">Products<strong>'+products.length+'</strong></div><div class="stat">Vendors<strong>'+vendors.length+'</strong></div><div class="stat">Orders<strong>'+orders.length+'</strong></div><div class="stat">Demo sales<strong>₹'+sales+'</strong></div>';
+ document.getElementById("adminOrders").innerHTML=orders.map(o=>'<p>Order '+o.id+' - ₹'+o.total+'</p>').join("")||"No demo orders yet.";
 }
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 ["search","category","sort"].forEach(id=>document.getElementById(id).addEventListener("input",renderProducts));
-renderProducts();save();renderVendor();
+renderProducts();updateMenu();renderVendor();
