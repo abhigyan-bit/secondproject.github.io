@@ -2,12 +2,12 @@
 // Demo data is temporary and resets when the page is refreshed.
 
 var products = [
- {id:1,name:"Fresh vegetables",vendor:"Green Basket",price:60,category:"Groceries",stock:20,emoji:"🥬"},
- {id:2,name:"Mango pickle",vendor:"Asha Home Foods",price:140,category:"Food",stock:12,emoji:"🥭"},
- {id:3,name:"Cotton tote bag",vendor:"Thread & Craft",price:220,category:"Handmade",stock:8,emoji:"👜"},
- {id:4,name:"Fresh bread",vendor:"Corner Oven",price:45,category:"Food",stock:15,emoji:"🍞"},
- {id:5,name:"Clay flower pot",vendor:"Mitti Studio",price:110,category:"Home",stock:10,emoji:"🪴"},
- {id:6,name:"Cotton kurta",vendor:"Local Loom",price:499,category:"Clothing",stock:6,emoji:"👕"}
+ {id:1,name:"Fresh vegetables",vendor:"Green Basket",price:60,category:"Groceries",stock:20,image:"https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600"},
+ {id:2,name:"Mango pickle",vendor:"Asha Home Foods",price:140,category:"Food",stock:12,image:"https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600"},
+ {id:3,name:"Cotton tote bag",vendor:"Thread & Craft",price:220,category:"Handmade",stock:8,image:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600"},
+ {id:4,name:"Fresh bread",vendor:"Corner Oven",price:45,category:"Food",stock:15,image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600"},
+ {id:5,name:"Clay flower pot",vendor:"Mitti Studio",price:110,category:"Home",stock:10,image:"https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600"},
+ {id:6,name:"Cotton kurta",vendor:"Local Loom",price:499,category:"Clothing",stock:6,image:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600"}
 ];
 var vendors = [];
 var cart = [];
@@ -59,7 +59,7 @@ function renderProducts() {
  if(sort==="high") list.sort((a,b)=>b.price-a.price);
  document.getElementById("resultCount").innerText=list.length+" products";
  document.getElementById("productGrid").innerHTML=list.map(p=>
-  '<div class="product"><div class="product-art">'+p.emoji+'</div><div class="product-body"><h3>'+p.name+'</h3><p class="vendor">By '+p.vendor+' · '+p.category+'</p><p class="muted">'+p.stock+' in stock</p><div class="price-row"><b class="price">₹'+p.price+'</b><button class="small-btn" onclick="addToCart('+p.id+')">Add to cart</button></div></div></div>'
+  '<div class="product"><div class="product-art"><img src="'+(p.image||'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600')+'" alt="'+p.name+'" onerror="this.src=\'https://placehold.co/600x400?text=Product\'"></div><div class="product-body"><h3>'+p.name+'</h3><p class="vendor">By '+p.vendor+' · '+p.category+'</p><p class="muted">'+p.stock+' in stock</p><div class="price-row"><b class="price">₹'+p.price+'</b><button class="small-btn" onclick="addToCart('+p.id+')">Add to cart</button></div></div></div>'
  ).join("")||"<p>No products found.</p>";
 }
 function addToCart(id) {
@@ -116,7 +116,7 @@ function vendorLogout() {currentVendor=null;renderVendor();}
 document.getElementById("productForm").addEventListener("submit",function(e) {
  e.preventDefault();
  if(!currentVendor) return alert("Please register or sign in first.");
- var p={id:Date.now(),name:document.getElementById("pName").value,vendor:currentVendor.name,owner:currentVendor.email,price:Number(document.getElementById("pPrice").value),category:document.getElementById("pCategory").value,stock:Number(document.getElementById("pStock").value),emoji:document.getElementById("pEmoji").value||"🛍️"};
+ var p={id:Date.now(),name:document.getElementById("pName").value,vendor:currentVendor.name,owner:currentVendor.email,price:Number(document.getElementById("pPrice").value),category:document.getElementById("pCategory").value,stock:Number(document.getElementById("pStock").value),image:document.getElementById("pImage").value||"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"};
  if(p.price<=0) return alert("Enter a valid price.");
  products.unshift(p);this.reset();document.getElementById("pStock").value=10;
  renderProducts();showPage("home");alert("Demo product added to homepage!");
